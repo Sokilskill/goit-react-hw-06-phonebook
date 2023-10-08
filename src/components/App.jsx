@@ -6,18 +6,23 @@ import ContactList from './ContactList/ContactList';
 import ContactForm from './ContactForm/ContactForm';
 import MainTitle from './MainTitle/MainTitle';
 
-const CONTACTS = JSON.parse(localStorage.getItem('CONTACTS'));
-
 export const App = () => {
+  const CONTACTS = JSON.parse(localStorage.getItem('CONTACTS'));
+
   const [contacts, setContacts] = useState(CONTACTS ?? []);
   const [filter, setFilter] = useState('');
   const [isInitializedTemplate, setIsInitializedTemplate] = useState(
     CONTACTS && CONTACTS.length > 0 ? true : false
   );
-  const [timer, setTimer] = useState(3);
+  const [timer, setTimer] = useState(0);
 
   useEffect(() => {
+    //якщо в пустий локал сторедж задати таймер 3 (використовується для відображення таймеру зворотнього відліку на сторінці),
+    // і запустити setTimout => завантажить шаблон контактів і виведе на екран
+
     if (!isInitializedTemplate) {
+      setTimer(3);
+
       setTimeout(() => {
         setContacts(contactsTemplate);
         setIsInitializedTemplate(true);
@@ -34,12 +39,6 @@ export const App = () => {
       return () => clearInterval(interval);
     }
   }, [timer]);
-  // useEffect(() => {
-  //   window.localStorage.setItem(
-  //     'isInitializedTemplate',
-  //     JSON.stringify(isInitializedTemplate)
-  //   );
-  // }, [isInitializedTemplate]);
 
   useEffect(() => {
     window.localStorage.setItem('CONTACTS', JSON.stringify(contacts));
