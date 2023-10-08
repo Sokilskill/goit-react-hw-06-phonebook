@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Filter from './Filter/Filter';
@@ -8,13 +8,13 @@ import MainTitle from './MainTitle/MainTitle';
 import { addContact } from 'redux/contacts/contactsSlice';
 
 export const App = () => {
-  const CONTACTS = JSON.parse(localStorage.getItem('persist:root'));
-  console.log('CONTACTS', CONTACTS);
-  // const [contacts, setContacts] = useState(CONTACTS ?? []);
-  const [isInitializedTemplate, setIsInitializedTemplate] = useState(
-    CONTACTS && CONTACTS.length > 0 ? true : false
-  );
-  const [timer, setTimer] = useState(0);
+  // const CONTACTS = JSON.parse(localStorage.getItem('persist:root'));
+  // console.log('CONTACTS', CONTACTS);
+
+  // const [isInitializedTemplate, setIsInitializedTemplate] = useState(
+  //   CONTACTS && CONTACTS.length > 0 ? true : false
+  // );
+  // const [timer, setTimer] = useState(0);
 
   const dispatch = useDispatch();
   const contacts = useSelector(({ contacts }) => contacts);
@@ -34,19 +34,21 @@ export const App = () => {
   //   }
   // }, [dispatch, isInitializedTemplate]);
 
-  useEffect(() => {
-    if (timer > 0) {
-      const interval = setInterval(() => {
-        setTimer(prevTimer => prevTimer - 1);
-      }, 1000);
+  // useEffect(() => {
+  //   if (timer > 0) {
+  //     const interval = setInterval(() => {
+  //       setTimer(prevTimer => prevTimer - 1);
+  //     }, 1000);
 
-      return () => clearInterval(interval);
-    }
-  }, [timer]);
+  //     return () => clearInterval(interval);
+  //   }
+  // }, [timer]);
 
-  useEffect(() => {
-    window.localStorage.setItem('CONTACTS', JSON.stringify(contacts));
-  }, [contacts]);
+  // useEffect(() => {
+  //   window.localStorage.setItem('CONTACTS', JSON.stringify(contacts));
+  // }, [contacts]);
+
+  // addNewContacts не залишив тут форма може бути перевикористана
 
   const addNewContacts = (name, number) => {
     const noClearInputForm = true;
@@ -76,7 +78,7 @@ export const App = () => {
             Ви не маєте збережених контактів, будуть завантажені шаблони
             контактів
           </p>
-          <p>{timer}</p>
+          {/* <p>{timer}</p> */}
         </>
       )}
     </div>
