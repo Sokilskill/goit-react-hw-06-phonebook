@@ -8,8 +8,8 @@ import MainTitle from './MainTitle/MainTitle';
 import { addContact } from 'redux/contacts/contactsSlice';
 
 export const App = () => {
-  const CONTACTS = JSON.parse(localStorage.getItem('CONTACTS'));
-
+  const CONTACTS = JSON.parse(localStorage.getItem('persist:root'));
+  console.log('CONTACTS', CONTACTS);
   // const [contacts, setContacts] = useState(CONTACTS ?? []);
   const [isInitializedTemplate, setIsInitializedTemplate] = useState(
     CONTACTS && CONTACTS.length > 0 ? true : false
@@ -18,10 +18,9 @@ export const App = () => {
 
   const dispatch = useDispatch();
   const contacts = useSelector(({ contacts }) => contacts);
-  // console.log('contactsSlice', contacts);
 
   // useEffect(() => {
-  //   //якщо в пустий локал сторедж задати таймер 3 (використовується для відображення таймеру зворотнього відліку на сторінці),
+  //   //якщо пустий локал сторедж => тоді задати таймер 3 (використовується для відображення таймеру зворотнього відліку на сторінці),
   //   // і запустити setTimout => завантажить шаблон контактів і виведе на екран
 
   //   if (!isInitializedTemplate) {
@@ -50,14 +49,12 @@ export const App = () => {
   }, [contacts]);
 
   const addNewContacts = (name, number) => {
-    const showAlert = true;
+    const noClearInputForm = true;
     const similarElement = element => element.name === name;
     if (contacts.find(similarElement)) {
       alert(name + ' is already in contacts.');
-      return showAlert;
+      return noClearInputForm;
     }
-
-    // setContacts(prevState => [{ id: nanoid(), name, number }, ...prevState]);
     dispatch(addContact({ name, number }));
   };
 
@@ -68,10 +65,7 @@ export const App = () => {
       <MainTitle title="Contacts" />
       <Filter />
       {true ? (
-        <ContactList
-        // contacts={filterContacts()}
-        // onButtonDelete={handlerButtonDelete}
-        />
+        <ContactList />
       ) : (
         <>
           <p>

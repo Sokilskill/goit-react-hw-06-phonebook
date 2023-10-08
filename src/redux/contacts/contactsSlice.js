@@ -3,7 +3,7 @@ import contactsTemplate from '../../data/contactsTemplate.json';
 
 const contactsSlice = createSlice({
   name: 'contacts',
-  initialState: [...contactsTemplate],
+  initialState: [],
   reducers: {
     addContact(state, { payload }) {
       return [{ id: nanoid(), ...payload }, ...state];
