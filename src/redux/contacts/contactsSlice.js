@@ -1,5 +1,4 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit';
-import contactsTemplate from '../../data/contactsTemplate.json';
 
 const contactsSlice = createSlice({
   name: 'contacts',
