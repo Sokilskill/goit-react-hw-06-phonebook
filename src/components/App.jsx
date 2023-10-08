@@ -1,34 +1,39 @@
 import { useState, useEffect } from 'react';
-import { nanoid } from 'nanoid';
-import contactsTemplate from '../data/contactsTemplate.json';
+import { useDispatch, useSelector } from 'react-redux';
+
 import Filter from './Filter/Filter';
 import ContactList from './ContactList/ContactList';
 import ContactForm from './ContactForm/ContactForm';
 import MainTitle from './MainTitle/MainTitle';
+import { addContact } from 'redux/contacts/contactsSlice';
 
 export const App = () => {
   const CONTACTS = JSON.parse(localStorage.getItem('CONTACTS'));
 
-  const [contacts, setContacts] = useState(CONTACTS ?? []);
-  const [filter, setFilter] = useState('');
+  // const [contacts, setContacts] = useState(CONTACTS ?? []);
   const [isInitializedTemplate, setIsInitializedTemplate] = useState(
     CONTACTS && CONTACTS.length > 0 ? true : false
   );
   const [timer, setTimer] = useState(0);
 
-  useEffect(() => {
-    //якщо в пустий локал сторедж задати таймер 3 (використовується для відображення таймеру зворотнього відліку на сторінці),
-    // і запустити setTimout => завантажить шаблон контактів і виведе на екран
+  const dispatch = useDispatch();
+  const contacts = useSelector(({ contacts }) => contacts);
+  // console.log('contactsSlice', contacts);
 
-    if (!isInitializedTemplate) {
-      setTimer(3);
+  // useEffect(() => {
+  //   //якщо в пустий локал сторедж задати таймер 3 (використовується для відображення таймеру зворотнього відліку на сторінці),
+  //   // і запустити setTimout => завантажить шаблон контактів і виведе на екран
 
-      setTimeout(() => {
-        setContacts(contactsTemplate);
-        setIsInitializedTemplate(true);
-      }, 3000);
-    }
-  }, [isInitializedTemplate]);
+  //   if (!isInitializedTemplate) {
+  //     setTimer(3);
+
+  //     setTimeout(() => {
+  //       // setContacts(contactsTemplate);
+  //       dispatch(addContact(...contactsTemplate));
+  //       setIsInitializedTemplate(true);
+  //     }, 3000);
+  //   }
+  // }, [dispatch, isInitializedTemplate]);
 
   useEffect(() => {
     if (timer > 0) {
@@ -52,23 +57,8 @@ export const App = () => {
       return showAlert;
     }
 
-    setContacts(prevState => [{ id: nanoid(), name, number }, ...prevState]);
-  };
-
-  const handlerInputFilter = e => {
-    const { value } = e.target;
-    setFilter(value);
-  };
-
-  const handlerButtonDelete = id => {
-    setContacts(prevState => prevState.filter(contact => contact.id !== id));
-  };
-
-  const filterContacts = () => {
-    const lowerCaseFilter = filter.toLowerCase();
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(lowerCaseFilter)
-    );
+    // setContacts(prevState => [{ id: nanoid(), name, number }, ...prevState]);
+    dispatch(addContact({ name, number }));
   };
 
   return (
@@ -76,12 +66,11 @@ export const App = () => {
       <MainTitle title="Phonebook" />
       <ContactForm addNewContacts={addNewContacts} />
       <MainTitle title="Contacts" />
-      <Filter onChange={handlerInputFilter} filterValue={filter} />
-
-      {isInitializedTemplate ? (
+      <Filter />
+      {true ? (
         <ContactList
-          contacts={filterContacts()}
-          onButtonDelete={handlerButtonDelete}
+        // contacts={filterContacts()}
+        // onButtonDelete={handlerButtonDelete}
         />
       ) : (
         <>
