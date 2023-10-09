@@ -5,7 +5,6 @@ const contactsSlice = createSlice({
   initialState: [],
   reducers: {
     addContact(state, { payload }) {
-      console.log('payload', payload);
       return [...payload, ...state];
     },
     deleteContact(state, { payload }) {

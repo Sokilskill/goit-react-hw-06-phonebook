@@ -3,6 +3,7 @@ import css from './ContactForm.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/contacts/contactsSlice';
 import { getContacts } from 'redux/selector';
+import { nanoid } from '@reduxjs/toolkit';
 
 const ContactForm = () => {
   const contacts = useSelector(getContacts);
@@ -13,6 +14,7 @@ const ContactForm = () => {
 
   const handlerInputChange = e => {
     const { name, value } = e.target;
+
     switch (name) {
       case 'name':
         setName(value);
@@ -27,14 +29,13 @@ const ContactForm = () => {
 
   const handlerFormSubmit = e => {
     e.preventDefault();
-
     const similarElement = element => element.name === name;
     if (contacts.find(similarElement)) {
       alert(name + ' is already in contacts.');
       return;
     }
 
-    dispatch(addContact({ name, number }));
+    dispatch(addContact([{ id: nanoid(), name, number }]));
     setName('');
     setNumber('');
   };
