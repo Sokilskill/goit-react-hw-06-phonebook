@@ -1,11 +1,7 @@
-// import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
 import Filter from './Filter/Filter';
 import ContactList from './ContactList/ContactList';
 import ContactForm from './ContactForm/ContactForm';
 import MainTitle from './MainTitle/MainTitle';
-import { addContact } from 'redux/contacts/contactsSlice';
 
 export const App = () => {
   // const CONTACTS = JSON.parse(localStorage.getItem('persist:root'));
@@ -15,9 +11,6 @@ export const App = () => {
   //   CONTACTS && CONTACTS.length > 0 ? true : false
   // );
   // const [timer, setTimer] = useState(0);
-
-  const dispatch = useDispatch();
-  const contacts = useSelector(({ contacts }) => contacts);
 
   // useEffect(() => {
   //   //якщо пустий локал сторедж => тоді задати таймер 3 (використовується для відображення таймеру зворотнього відліку на сторінці),
@@ -50,20 +43,20 @@ export const App = () => {
 
   // addNewContacts не залишив тут форма може бути перевикористана
 
-  const addNewContacts = (name, number) => {
-    const noClearInputForm = true;
-    const similarElement = element => element.name === name;
-    if (contacts.find(similarElement)) {
-      alert(name + ' is already in contacts.');
-      return noClearInputForm;
-    }
-    dispatch(addContact({ name, number }));
-  };
+  // const addNewContacts = (name, number) => {
+  //   const noClearInputForm = true;
+  //   const similarElement = element => element.name === name;
+  //   if (contacts.find(similarElement)) {
+  //     alert(name + ' is already in contacts.');
+  //     return noClearInputForm;
+  //   }
+  //   dispatch(addContact({ name, number }));
+  // };
 
   return (
     <div className="container">
       <MainTitle title="Phonebook" />
-      <ContactForm addNewContacts={addNewContacts} />
+      <ContactForm />
       <MainTitle title="Contacts" />
       <Filter />
       {true ? (
