@@ -1,35 +1,38 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getContacts } from 'redux/selector';
-import { addContact } from 'redux/contacts/contactsSlice';
 import contactsTemplate from '../data/contactsTemplate.json';
 import Filter from './Filter/Filter';
 import ContactList from './ContactList/ContactList';
 import ContactForm from './ContactForm/ContactForm';
 import MainTitle from './MainTitle/MainTitle';
+import { addContact } from 'redux/contacts/contactsSlice';
 
 export const App = () => {
   const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
-  const [timer, setTimer] = useState(3);
-  const [showTemplate, setShowTempalte] = useState(false);
+  const [timer, setTimer] = useState(0);
+  const [showTemplate, setShowTemplate] = useState(contacts.length === 0);
 
   useEffect(() => {
-    if (contacts.length === 0) {
-      setShowTempalte(true);
+    if (showTemplate) {
       setTimer(3);
-      const timerId = setInterval(
-        () => setTimer(prevState => prevState - 1),
-        1000
-      );
-
       setTimeout(() => {
-        clearInterval(timerId);
-        setShowTempalte(false);
+        setShowTemplate(false);
         dispatch(addContact(contactsTemplate));
       }, 3000);
     }
-  }, [contacts, dispatch]);
+  }, [dispatch, showTemplate]);
+
+  useEffect(() => {
+    if (timer > 0) {
+      const interval = setInterval(() => {
+        setTimer(prevTimer => prevTimer - 1);
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [timer]);
 
   return (
     <div className="container">
@@ -42,10 +45,6 @@ export const App = () => {
           <p>
             You don't have any saved contacts, templates for contacts will be
             loaded
-          </p>
-          <p>
-            Ви не маєте збережених контактів, будуть завантажені шаблони
-            контактів
           </p>
           <p>{timer}</p>
         </>
