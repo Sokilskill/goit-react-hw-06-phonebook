@@ -19,7 +19,9 @@ export const App = () => {
       setTimer(3);
       setTimeout(() => {
         setShowTemplate(false);
-        dispatch(addContact(contactsTemplate));
+        contactsTemplate.forEach(contact => {
+          dispatch(addContact(contact));
+        });
       }, 3000);
     }
   }, [dispatch, showTemplate]);
